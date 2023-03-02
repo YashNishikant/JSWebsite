@@ -21,6 +21,15 @@ h1{
     font-size: 80px;
 }
 
+h2{
+  letter-spacing: 5px;
+  color: #000;
+  text-align: center;
+  padding: 10px;
+  size: 90px;
+  font-size: 30px;
+}
+
 form {
     border: 15px solid #ffffff;
     margin-top: 40px;
@@ -66,4 +75,16 @@ button:hover {
     display: block;
     float: none;
   }
+}
+
+.logout{
+
+  background-color: #ff5656;
+  color: rgb(255, 255, 255);
+  padding: 14px 20px;
+  margin-top: 35px;
+  border: none;
+  cursor: pointer;
+  width: 50%;
+
 }

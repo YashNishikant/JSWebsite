@@ -103,3 +103,14 @@ a:hover{
     text-decoration: none;
 
 }
+
+.back{
+
+    background-color: #4e41ff;
+    color: rgb(255, 255, 255);
+    padding: 14px 20px;
+    margin-top: 35px;
+    width:5%;
+    border: 1px solid #ffff;
+
+}

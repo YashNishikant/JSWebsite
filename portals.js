@@ -13,8 +13,24 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 
-import {getDatabase, set, get, update, remove, ref, child} from "https://www.gstatic.com/firebasejs/9.17.1/firebase-database.js"
+import {getDatabase, set, get, update, remove, ref, child, onValue} from "https://www.gstatic.com/firebasejs/9.17.1/firebase-database.js"
 const db = getDatabase();
+
+const userRef = ref(db, localStorage.getItem("user")+"/");
+onValue(userRef, (snapshot) => {
+    
+    console.log(snapshot.child("testing").value)
+
+    snapshot.forEach(element => {
+        console.log(element.key)
+        //console.log(snapshot.child("10016796@sbstudents_org").value)
+    });
+
+});
+
+Back.addEventListener('click',(e)=>{
+    location.replace("/login.html")
+})
 
 buttonAdd.addEventListener('click',(e)=>{
 
