@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
-import {getAuth, GoogleAuthProvider, signInWithPopup, signOut} from "https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js"
+import {getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged} from "https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js"
 
 const firebaseConfig = {
   apiKey: "AIzaSyBqAEME6HTZXXYj6bPjzn_vXBryF4Gyyn4",
@@ -16,66 +16,68 @@ const auth = getAuth(app)
 const provider = new GoogleAuthProvider(app);
 const message = document.getElementById("message")
 const login = document.getElementById("login")
-var loggedIn = false;
 
-try{
-    message.textContent="Welcome " + localStorage.getItem("userName")
-    if(!localStorage.getItem("userObj")){
+loadWelcome();
+
+logout.addEventListener('click',(e)=>{
+    localStorage.removeItem("userName")
+    localStorage.removeItem("authint")
+
+    signOut(auth);
+    loadWelcome();
+})
+
+login.addEventListener('click',(e)=>{
+    if(!localStorage.getItem("userName")){
+    signInWithPopup(auth, provider)
+    .then((result) => {  
+        var user = result.user
+        console.log("signin way")
+        const credential = GoogleAuthProvider.credentialFromResult(result);
+        const token = credential.accessToken;
+        var email = user.email;
+        message.textContent="Welcome " + localStorage.getItem("userName")
+        email = email.replace(/\./g,'_')
+        localStorage.setItem("userName", user.displayName);
+        localStorage.setItem("user", email)
+        localStorage.setItem("authint", 1)
+        location.replace("/portals.html")
+    })
+  }
+  else{
+      location.replace("/portals.html")
+  }
+});
+
+
+function loadWelcome(){
+
+  try{
+    if(getAuth().currentUser)
+      message.textContent="Welcome " + localStorage.getItem("userName")
+    else
+      message.textContent="Sign In"
+
+    if(localStorage.getItem("authint")==1){
         login.innerText="Next"
-        console.log("login set to true on init")
-        loggedIn = true
     }
     else{
         login.innerText="Login"
-        localStorage.setItem("userName", "...");
-        console.log("login set to false on init")
-        loggedIn = false
+        localStorage.removeItem("userName", null);
     }
-}
-catch{
-    console.log("NULL USER")
-}
-
-function monitor(){
-    console.log("user status - " + localStorage.getItem("userObj"))
-    console.log("logged in status - " + loggedIn)
+  }
+  catch{
+    login.innerText="Login"
+    localStorage.removeItem("userName", null);
+  }
 }
 
-logout.addEventListener('click',(e)=>{
-    monitor()
-    message.textContent="Successfully Logged Out"
-    console.log("signed out")
-    localStorage.setItem("userObj", null)
-    localStorage.setItem("userName", "...");
-    signOut(auth);
-})
-
-if(!loggedIn){
-    login.addEventListener('click',(e)=>{
-        monitor()
-        signInWithPopup(auth, provider)
-        .then((result) => {
-            const credential = GoogleAuthProvider.credentialFromResult(result);
-            const token = credential.accessToken;
-            const user = result.user;
-
-            console.log(user.displayName)
-            localStorage.setItem("userName", user.displayName);
-
-            var email = user.email;
-            email = email.replace(/\./g,'_')
-            localStorage.setItem("user", email)
-            localStorage.setItem("userObj", user)
-            message.textContent="Welcome " + localStorage.getItem("userName")
-            loggedIn = true
-            location.replace("/portals.html")
-        })
-        
-    });
-}
-else{
-    login.addEventListener('click',(e)=>{
-        monitor()
-        location.replace("/portals.html")        
-    });
-}
+getAuth().onAuthStateChanged(function(user2) {
+  if (user2) {
+    localStorage.setItem("userName", user2.displayName)
+    localStorage.setItem("authint", 1)
+  } else {
+    console.log("Signed out")   
+  }
+  loadWelcome()
+});
