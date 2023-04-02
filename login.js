@@ -1,4 +1,4 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
+import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
 import {getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged} from "https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js"
 
 const firebaseConfig = {
@@ -10,10 +10,13 @@ const firebaseConfig = {
   appId: "1:810248528077:web:777327e3e12021bf804984"
 };
 
+let app;
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app)
+if (getApps().length < 1) {
+  app = initializeApp(firebaseConfig);
+}
 
+const auth = getAuth(app)
 const provider = new GoogleAuthProvider(app);
 const message = document.getElementById("message")
 const login = document.getElementById("login")
@@ -27,6 +30,7 @@ logout.addEventListener('click',(e)=>{
     signOut(auth);
     loadWelcome();
 })
+
 
 login.addEventListener('click',(e)=>{
     if(!localStorage.getItem("userName")){
@@ -67,7 +71,8 @@ function loadWelcome(){
         localStorage.removeItem("userName", null);
     }
   }
-  catch{
+  catch (error) {
+    console.error(error);
     login.innerText="Login"
     localStorage.removeItem("userName", null);
   }

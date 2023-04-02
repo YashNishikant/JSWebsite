@@ -1,5 +1,5 @@
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
+import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
 import {getDatabase, set, get, update, remove, ref, child, onValue} from "https://www.gstatic.com/firebasejs/9.17.1/firebase-database.js"
 import {getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged} from "https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js"
 
@@ -13,19 +13,26 @@ const firebaseConfig = {
   appId: "1:810248528077:web:777327e3e12021bf804984"
 };
 
-const app = initializeApp(firebaseConfig);
+let app;
+
+if (getApps().length < 1) {
+    app = initializeApp(firebaseConfig);
+}
 const db = getDatabase();
+
 
 const e = ref(db, 'Users/' + localStorage.getItem('user'));
 onValue(e, (snapshot) => {
 
-    snapshot.foreach((childsnapshot)=> {
+    let data = snapshot.val();
+    console.log(data)
 
-        const data = snapshot.val()
+    for(var key in data){ 
+        console.log(key)
+        console.log(data[key]['URL'])
 
-
-    })
-
+    }
+      
 });
 
 Back.addEventListener('click',(e)=>{
