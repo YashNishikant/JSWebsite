@@ -13,6 +13,7 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app)
+
 const provider = new GoogleAuthProvider(app);
 const message = document.getElementById("message")
 const login = document.getElementById("login")
@@ -39,7 +40,7 @@ login.addEventListener('click',(e)=>{
         message.textContent="Welcome " + localStorage.getItem("userName")
         email = email.replace(/\./g,'_')
         localStorage.setItem("userName", user.displayName);
-        localStorage.setItem("user", email)
+        localStorage.setItem("user", user.uid)
         localStorage.setItem("authint", 1)
         location.replace("/portals.html")
     })
