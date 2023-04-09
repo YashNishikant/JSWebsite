@@ -69,11 +69,21 @@ li{
     border: 1px solid;
   }
 
-span{
+.removeSpan{
 
     position:absolute;
     width:55px;
     background-color: rgb(255, 69, 69);
+    text-align: center;
+    right:0px;
+ 
+}
+
+.addSpan{
+
+    position:absolute;
+    width:55px;
+    background-color: rgb(69, 255, 78);
     text-align: center;
     right:0px;
  

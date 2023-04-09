@@ -1,17 +1,16 @@
-import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
-import {getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged} from "https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js"
+import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/9.19.1/firebase-app.js";
+import {getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged} from "https://www.gstatic.com/firebasejs/9.19.1/firebase-auth.js"
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBqAEME6HTZXXYj6bPjzn_vXBryF4Gyyn4",
-  authDomain: "portalview-5b9ae.firebaseapp.com",
-  projectId: "portalview-5b9ae",
-  storageBucket: "portalview-5b9ae.appspot.com",
-  messagingSenderId: "810248528077",
-  appId: "1:810248528077:web:777327e3e12021bf804984"
+    apiKey: "AIzaSyBqAEME6HTZXXYj6bPjzn_vXBryF4Gyyn4",
+    authDomain: "portalview-5b9ae.firebaseapp.com",
+    projectId: "portalview-5b9ae",
+    storageBucket: "portalview-5b9ae.appspot.com",
+    messagingSenderId: "810248528077",
+    appId: "1:810248528077:web:777327e3e12021bf804984"
 };
 
 let app;
-// Initialize Firebase
 if (getApps().length < 1) {
   app = initializeApp(firebaseConfig);
 }
@@ -37,7 +36,6 @@ login.addEventListener('click',(e)=>{
     signInWithPopup(auth, provider)
     .then((result) => {  
         var user = result.user
-        console.log("signin way")
         const credential = GoogleAuthProvider.credentialFromResult(result);
         const token = credential.accessToken;
         var email = user.email;
@@ -83,7 +81,6 @@ getAuth().onAuthStateChanged(function(user2) {
     localStorage.setItem("userName", user2.displayName)
     localStorage.setItem("authint", 1)
   } else {
-    console.log("Signed out")   
   }
   loadWelcome()
 });

@@ -3,7 +3,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <link rel="stylesheet", href="portals.css">
-
 <script type="module" src="portals.js" defer></script>
 
 <head>
@@ -14,7 +13,7 @@
 <body>
     <h1 id="title"></h1>
 
-    <form action="action_page.php" method="post">
+    <form action="action_page.php" method="post" id="form">
 
         <div class="container">
             <input type="text" id="nametext" placeholder="Enter Name"autocomplete="off"></input>
@@ -24,8 +23,16 @@
         <button type="button" id="buttonAdd">+</button>
     </form>
 
-    <ul id="list">
-    </ul>
+    <div style="width: 50%; height: 100px; float: left;">
+        <ul id="list">
+        </ul>
+    </div>
+    
+    <div style="margin-left: 50%; height: 100px;">
+        <ul id="suggested">
+        </ul>
+    </div>
+
 </body>
 </html>
 
