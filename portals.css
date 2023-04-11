@@ -89,9 +89,15 @@ li{
  
 }
 
-span:hover{
+.removeSpan:hover{
 
     background-color: rgb(255, 152, 152);
+
+}
+
+.addSpan:hover{
+
+    background-color: rgb(187, 255, 196);
 
 }
 

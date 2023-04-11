@@ -70,17 +70,22 @@ onValue(e, (snapshot) => {
     }
 });
 
-
-
 Back.addEventListener('click',(e)=>{
     location.replace("/login.html")
 })
 buttonAdd.addEventListener('click',(e)=>{
-    set(ref(db, "Users" + "/" + localStorage.getItem("user") + "/" + nametext.value),{
-        URL: urltext.value
-    })
-    urltext.value=""
-    nametext.value=""
+    if(urltext.value != "" || nametext.value !=""){
+        if(isUrl(urltext.value)){
+            set(ref(db, "Users" + "/" + localStorage.getItem("user") + "/" + nametext.value),{
+                URL: urltext.value
+            })
+            urltext.value=""
+            nametext.value=""
+        }
+        else{
+            console.log("nah")
+        }
+    }
 });
 
 getAuth().onAuthStateChanged(function(user2) {});  
@@ -121,3 +126,13 @@ function generateLi(linkName, linkurl, generateClassTag, addMode){
 
     return li2
 }
+
+function isUrl (string) {
+    var url;
+    try {
+      url = new URL(string);
+    } catch (_) {
+      return false;
+    }
+    return url.protocol === "http:" || url.protocol === "https:";
+  }
