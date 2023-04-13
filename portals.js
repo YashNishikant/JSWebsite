@@ -13,10 +13,22 @@ const firebaseConfig = {
     appId: "1:810248528077:web:777327e3e12021bf804984"
 };
 
+var add
 var ul
 let app
 var ul2 = document.getElementById("suggested")
 var urlList = []
+var suggestedURLs = [["Google", "https://google.com"],
+                    ["YouTube", "https://youtube.com"],
+                    ["Facebook", "https://facebook.com"],
+                    ["Reddit", "https://reddit.com"],
+                    ["Bing", "https://bing.com"],
+                    ["Twitter", "https://twitter.com"],
+                    ["Wikipedia", "https://wikipedia.org"],
+                    ["LinkedIn", "https://linkedin.com"],
+                    ["Amazon", "https://amazon.com"],
+                    ["Netflix", "https://netflix.com"],
+                    ["Twitch", "https://twitch.tv"]]
 
 if (getApps().length < 1) {
     app = initializeApp(firebaseConfig);
@@ -46,37 +58,46 @@ function trashOption(){
 
 const e = ref(db, 'Users/' + localStorage.getItem('user'));
 onValue(e, (snapshot) => {
-    var lis = document.querySelectorAll(".storage")
     urlList = []
-    for(let i = 0; i < lis.length; i++){
-        lis[i].remove()
-    }
+
+    clearUL(".storage")
+    clearUL(".suggestedstorage")
+
     let data = snapshot.val();
     ul = document.getElementById("list")
     for(var key in data){ 
         ul.appendChild(generateLi(key, data[key]['URL'], true, false))
-
         urlList.push(data[key]['URL'])
-        console.log(urlList)
+    }
+
+    for(var i = 0; i < suggestedURLs.length; i++){
+        add=true
+        for(var j = 0; j < urlList.length; j++){
+
+            if(urlList[j].includes("www.")){
+                urlList[j] = urlList[j].replace("www.", "")
+            }
+
+            if(urlList[j].substring(urlList[j].length-1, urlList[j].length)=="/"){
+                urlList[j] = urlList[j].substring(0, urlList[j].length-1)
+            }
+
+            if(urlList[j].localeCompare(suggestedURLs[i][1])==0){
+                add=false
+                break
+            }       
+        }
+        if(add)
+        ul2.appendChild(generateLi(suggestedURLs[i][0], suggestedURLs[i][1], false, true))
     }
 });
 
-ul2.appendChild(generateLi("Google", "https://google.com", false, true))
-ul2.appendChild(generateLi("YouTube", "https://youtube.com", false, true))
-ul2.appendChild(generateLi("Facebook", "https://www.facebook.com/", false, true))
-ul2.appendChild(generateLi("Reddit", "https://www.reddit.com/", false, true))
-ul2.appendChild(generateLi("Bing", "https://www.bing.com/", false, true))
-ul2.appendChild(generateLi("Twitter", "https://twitter.com/?lang=en", false, true))
-ul2.appendChild(generateLi("Wikipedia", "https://www.wikipedia.org/", false, true))
-ul2.appendChild(generateLi("LinkedIn", "https://www.linkedin.com/feed/", false, true))
-ul2.appendChild(generateLi("Amazon", "https://www.amazon.com/", false, true))
-ul2.appendChild(generateLi("Netflix", "https://www.netflix.com/", false, true))
-ul2.appendChild(generateLi("Twitch", "https://www.twitch.tv/", false, true))
 
 
 Back.addEventListener('click',(e)=>{
     location.replace("/login.html")
 })
+
 buttonAdd.addEventListener('click',(e)=>{
     if(urltext.value != "" || nametext.value !=""){
         if(isUrl(urltext.value)){
@@ -130,6 +151,8 @@ function generateLi(linkName, linkurl, generateClassTag, addMode){
 
     if(generateClassTag)
         li2.classList.add("storage")
+    else
+        li2.classList.add("suggestedstorage")
 
     li2.appendChild(span)
     span.appendChild(img)
@@ -147,5 +170,11 @@ function isUrl (string) {
     return url.protocol === "http:" || url.protocol === "https:";
 }
 
+function clearUL(ulclass){
+    var lis = document.querySelectorAll(ulclass)
+    for(let i = 0; i < lis.length; i++){
+        lis[i].remove()
+    }
+}
   
 getAuth().onAuthStateChanged(function(user2) {});  
