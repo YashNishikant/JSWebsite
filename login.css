@@ -45,7 +45,6 @@ input[type=text], input[type=password] {
     box-sizing: border-box; 
 }
   
-/*LOGIN*/
 button {
   background-color: #2d70ec;
   color: rgb(255, 255, 255);
@@ -67,13 +66,6 @@ button:hover {
 
 .container {
   padding: 75px;
-}
-
-@media screen and (max-width: 300px) {
-  span.psw {
-    display: block;
-    float: none;
-  }
 }
 
 .logout{
